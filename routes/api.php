@@ -34,6 +34,9 @@
             Route::post('/referentiels', [ReferentielController::class, 'store']);
             Route::get('/referentiels', [ReferentielController::class, 'index']);
             Route::get('/referentiels/{id}', [ReferentielController::class, 'findByuid']);
+            Route::patch('/referentiels/{id}', [ReferentielController::class, 'update']);
+            Route::delete('/referentiels/{id}', [ReferentielController::class, 'softDelete']);
+            Route::get('/archive/referentiels', [ReferentielController::class, 'archive']);
         });
 
         //only amdin role with passport
@@ -53,6 +56,9 @@
             Route::post('/referentiels', [ReferentielController::class, 'store']);
             Route::get('/referentiels', [ReferentielController::class, 'index']);
             Route::get('/referentiels/{id}', [ReferentielController::class, 'findByuid']);
+            Route::patch('/referentiels/{id}', [ReferentielController::class, 'update']);
+            Route::delete('/referentiels/{id}', [ReferentielController::class, 'softDelete']);
+            Route::get('/archive/referentiels', [ReferentielController::class, 'archive']);
         });
 
         //only amdin role with firebase

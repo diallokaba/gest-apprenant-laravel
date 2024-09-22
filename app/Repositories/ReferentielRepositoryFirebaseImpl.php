@@ -8,11 +8,11 @@ class ReferentielRepositoryFirebaseImpl implements ReferentielRepositoryInterfac
     public function create(array $data){
         return Referentiel::create($data);
     }
-    public function update(array $data, $id){
-
+    public function update(array $data, $uid){
+        return Referentiel::update($data, $uid);
     }
-    public function find($id){
-        return Referentiel::find($id);
+    public function find($uid){
+        return Referentiel::find($uid);
     }
     public function delete($id){
 
@@ -32,7 +32,11 @@ class ReferentielRepositoryFirebaseImpl implements ReferentielRepositoryInterfac
         return Referentiel::findBy($value, $variableName);
     }
 
-    public function findByuidAndFilter($id){
-        return Referentiel::findByuidAndFilter($id);
+    public function findByuidAndFilter($id, $params){
+        return Referentiel::findByuidAndFilter($id, $params);
+    }
+
+    public function archive(){
+        return Referentiel::archive();
     }
 }

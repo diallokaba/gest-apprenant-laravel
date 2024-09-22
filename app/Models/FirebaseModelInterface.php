@@ -10,4 +10,5 @@ interface FirebaseModelInterface
     public static function delete($id);
     public static function all();
     public static function findBy($value, $variableName);
+    public static function archive();
 }

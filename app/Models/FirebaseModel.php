@@ -122,5 +122,37 @@ abstract class FirebaseModel implements FirebaseModelInterface{
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
+    public static function archive(){
+        if (is_null(static::$firestore)) {
+            new static(); // Initialisation de Firestore si nécessaire
+        }
+    
+        try {
+            
+            // Récupérer les documents qui ont un champ `deleted_at` non nul
+            $query = static::$firestore
+                ->collection(static::$collectionName)
+                ->where('is_deleted', '=', true) // Filtre pour les documents soft deleted
+                ->documents();
+    
+            // Vérification si des documents existent
+            if (!$query->isEmpty()) {
+                $archivedDocuments = [];
+    
+                // Parcourir les documents récupérés
+                foreach ($query->rows() as $document) {
+                    $archivedDocuments[] = $document->data();
+                }
+    
+                return $archivedDocuments; // Retourner tous les documents archivés
+            } else {
+                return null; // Aucun document soft deleted trouvé
+            }
+        } catch (\Exception $e) {
+            // Gestion des erreurs liées à Firestore
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
+    }    
     
 }

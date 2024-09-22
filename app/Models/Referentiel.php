@@ -47,9 +47,7 @@ class Referentiel extends FirebaseModel implements ReferentielModelInterface
         }
     }
 
-    public static function findByuidAndFilter($uid)
-    {  
-        //dd("Bonjour");
+    public static function findByuidAndFilter($uid, $params){
         if (is_null(static::$firestore)) {
             new static(); // Initialisation de Firestore si nécessaire
         }
@@ -61,11 +59,34 @@ class Referentiel extends FirebaseModel implements ReferentielModelInterface
                 ->where('uid', '=', $uid)
                 ->documents();
 
-               
             // Vérification si des documents existent
             if (!$query->isEmpty()) {
                 $document = $query->rows()[0]; // Récupérer le premier document correspondant
-                return $document->data(); // Retourner les données du document
+                $data = $document->data(); // Récupérer les données du document
+
+                // Vérifier si le paramètre 'module=oui' est présent
+                if ($params->input('module') === 'oui') {
+                    // Si module=oui, filtrer uniquement les modules et retirer les compétences
+                    $modules = [];
+
+                    // Parcourir les compétences pour extraire les modules
+                    if (isset($data['competences'])) {
+                        foreach ($data['competences'] as $competence) {
+                            if (isset($competence['modules'])) {
+                                // Ajouter les modules dans la nouvelle structure
+                                foreach ($competence['modules'] as $module) {
+                                    $modules[] = $module;
+                                }
+                            }
+                        }
+                    }
+
+                    // Retirer les compétences et ne garder que les modules
+                    unset($data['competences']);
+                    $data['modules'] = $modules;
+                }
+
+                return $data; // Retourner les données filtrées ou complètes
             } else {
                 return null; // Aucun document trouvé
             }
@@ -74,5 +95,6 @@ class Referentiel extends FirebaseModel implements ReferentielModelInterface
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 }
 
