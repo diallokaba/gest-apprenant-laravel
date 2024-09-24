@@ -9,6 +9,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Kreait\Firebase\Factory;
 
+/**
+ * @OA\Info(
+ *    title="API for Student Management",
+ *    version="1.0.0",
+ * )
+ */
 class AuthController extends Controller
 {
     private $connexion;
@@ -23,6 +29,49 @@ class AuthController extends Controller
         }
     }
 
+    /**
+    * @OA\Post(
+    *     path="/api/v1/auth/login",
+    *     operationId="Auth",
+    *     tags={"Auth"},
+    *     summary="Login user",
+    *     description="Connexion de l'utilisateur...",
+    *     @OA\RequestBody(
+    *         required=true,
+    *         @OA\MediaType(
+    *            mediaType="multipart/form-data",
+    *            @OA\Schema(
+    *               type="object",
+    *               required={"email", "password"},
+    *               @OA\Property(property="email", type="string", example="groupe6p6@gmail.com"),
+    *               @OA\Property(property="password", type="password", example="Passer@123"),
+    *            ),
+    *        ),
+    *        @OA\MediaType(
+    *            mediaType="application/json",
+    *            @OA\Schema(
+    *               type="object",
+    *               required={"email", "password"},
+    *               @OA\Property(property="email", type="string", example="groupe6p6@gmail.com"),
+    *               @OA\Property(property="password", type="password", example="Passer@123"),
+    *            ),
+    *        ),
+    *    ),
+    *    @OA\Response(
+    *        response=200,
+    *        description="Connexion réussie",
+    *        @OA\JsonContent()
+    *    ),
+    *    @OA\Response(
+    *        response=422,
+    *        description="Unprocessable Entity",
+    *        @OA\JsonContent()
+    *    ),
+    *    @OA\Response(response=400, description="Bad request"),
+    *    @OA\Response(response=404, description="Resource Not Found"),
+    *    @OA\Response(response=500, description="Internal server error"),
+    * )
+    */
     public function login(LoginRequest $request){
         $credentials = $request->only('email', 'password');
         

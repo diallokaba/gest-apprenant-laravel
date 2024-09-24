@@ -1,7 +1,8 @@
     <?php
 
     use App\Http\Controllers\AuthController;
-    use App\Http\Controllers\ReferentielController;
+use App\Http\Controllers\PromotionController;
+use App\Http\Controllers\ReferentielController;
     use App\Http\Controllers\UserController;
     use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
@@ -30,13 +31,17 @@
             Route::post('/users', [UserController::class, 'store']);
 
 
-            //Managed Referentiel
+            //Managed Referentiels
             Route::post('/referentiels', [ReferentielController::class, 'store']);
             Route::get('/referentiels', [ReferentielController::class, 'index']);
             Route::get('/referentiels/{id}', [ReferentielController::class, 'findByuid']);
             Route::patch('/referentiels/{id}', [ReferentielController::class, 'update']);
             Route::delete('/referentiels/{id}', [ReferentielController::class, 'softDelete']);
             Route::get('/archive/referentiels', [ReferentielController::class, 'archive']);
+
+
+            //Managed Promotions
+            Route::post('/promotions', [PromotionController::class, 'store']);
         });
 
         //only amdin role with passport
@@ -59,6 +64,10 @@
             Route::patch('/referentiels/{id}', [ReferentielController::class, 'update']);
             Route::delete('/referentiels/{id}', [ReferentielController::class, 'softDelete']);
             Route::get('/archive/referentiels', [ReferentielController::class, 'archive']);
+
+
+            //Managed Promotions
+            Route::post('/promotions', [PromotionController::class, 'store']);
         });
 
         //only amdin role with firebase

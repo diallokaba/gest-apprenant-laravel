@@ -99,11 +99,11 @@ abstract class FirebaseModel implements FirebaseModelInterface{
     }
 
     public static function findBy($value, $variableDBName){
-        if (is_null(static::$firestore)) {
-            new static(); // Initialisation de Firestore si nécessaire
-        }
-
         try {
+            if (is_null(static::$firestore)) {
+                new static(); // Initialisation de Firestore si nécessaire
+            }
+        
             // Recherche du document via le champ `uid`
             $query = static::$firestore
                 ->collection(static::$collectionName)
@@ -114,9 +114,8 @@ abstract class FirebaseModel implements FirebaseModelInterface{
             if (!$query->isEmpty()) {
                 $document = $query->rows()[0]; // Récupérer le premier document correspondant
                 return $document->data(); // Retourner les données du document
-            } else {
-                return null; // Aucun document trouvé
-            }
+            } 
+            return null; 
         } catch (\Exception $e) {
             // Gestion des erreurs liées à Firestore
             return response()->json(['error' => $e->getMessage()], 500);

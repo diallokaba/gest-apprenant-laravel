@@ -29,4 +29,8 @@ class PromotionRepositoryImpl implements PromotionRepositoryInterface{
     public function filter($request){
         return Promotion::customFilter($request);
     }
+
+    public function findBy($value, $variableName){
+        return Promotion::findBy($value, $variableName);
+    }
 }
